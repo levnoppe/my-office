@@ -1,18 +1,21 @@
-<div class="row app-{{appId}}-theme">
-  <div class="col-xs-12">
-    <div class="mat-headline">News Feed</div>
-    <mat-card class="example-card" *ngFor="let article of articlesFeed" class="col-xs-12" style="float: right">
+<div class="app-{{appId}}-theme">
+  <div class="mat-headline"> <mat-icon center>public</mat-icon> News Feed</div>
+  <div class="row">
+    <mat-card class="example-card"
+              *ngFor="let article of articlesFeed" c
+              lass="col-xs-12"
+              style="float: right">
       <img mat-card-image
            class="col-xs-2"
            [src]="article.image.thumbnail.contentUrl"
            [alt]="article.name"
            style="display: inline-block; width: 130px;">
 
-        <mat-card-header class="col-xs-10">
-          <mat-card-title> <strong>{{ article.provider[0].name }}</strong></mat-card-title>
-          <mat-card-title>{{ article.name }}</mat-card-title>
-          <mat-card-subtitle>{{ article.datePublished | date: 'dd/MM/yyyy'}}</mat-card-subtitle>
-        </mat-card-header>
+      <mat-card-header class="col-xs-10">
+        <mat-card-title> <strong>{{ article.provider[0].name }}</strong></mat-card-title>
+        <mat-card-title>{{ article.name }}</mat-card-title>
+        <mat-card-subtitle>{{ article.datePublished | date: 'dd/MM/yyyy'}}</mat-card-subtitle>
+      </mat-card-header>
 
       <mat-card-content style="display: inline-block;" class="col-xs-12">
         <p >
@@ -37,10 +40,10 @@
           <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium">
             <div aria-hidden="true"
                  class="resp-sharing-button__icon resp-sharing-button__icon--solid">
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 24 24">
-              <path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/>
-            </svg>
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   viewBox="0 0 24 24">
+                <path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/>
+              </svg>
             </div>Facebook</div>
         </a>
 
@@ -57,6 +60,5 @@
 
       </mat-card-actions>
     </mat-card>
-
   </div>
 </div>

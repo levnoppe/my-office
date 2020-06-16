@@ -1,19 +1,18 @@
 import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormControl, NgForm, Validators, FormGroup} from '@angular/forms';
+import {FormControl, Validators, FormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {AlertComponent} from '../shared/alert/alert.component';
 import {PlaceholderDirective} from '../shared/placeholder/placeholder.directive';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
 import * as AuthActions from './store/auth.actions';
-import * as SharedActions from '../shared/store/shared.actions';
-import {map} from 'rxjs/operators';
 
 
 
 @Component({
   selector: 'app-auth',
-  templateUrl: './auth.component.html'
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.css']
 
 })
 export class AuthComponent implements OnInit, OnDestroy {

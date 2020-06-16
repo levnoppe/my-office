@@ -1,1 +1,14 @@
+.mat-headline {
+  margin-top: 20vh;
+  margin-bottom: 5vh;
+}
 
+.mat-icon {
+  margine: 10px;
+  font-size: 20px;
+  height: 20px;
+}
+
+.mat-form-field{
+  padding-right: 20px;
+}

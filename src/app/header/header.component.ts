@@ -5,6 +5,7 @@ import * as fromApp from '../store/app.reducer';
 import {map} from 'rxjs/operators';
 import * as AuthActions from '../auth/store/auth.actions';
 import * as SharedActions from '../shared/store/shared.actions';
+import {OverlayContainer} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-header',
@@ -17,15 +18,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   appId = 'theme1';
 
-  constructor(private store: Store<fromApp.AppState>) {
+  constructor(private store: Store<fromApp.AppState>,
+              private overlayContainer: OverlayContainer) {
   }
 
   switchTheme(appId: string) {
     this.appId = appId;
     this.store.dispatch(new SharedActions.SetTheme(appId));
+    const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;
+    const themeClassesToRemove = Array.from(overlayContainerClasses).filter((item: string) => item.includes('-theme'));
+    if (themeClassesToRemove.length) {
+      overlayContainerClasses.remove(...themeClassesToRemove);
+    }
+    overlayContainerClasses.add('app-' + this.appId + '-theme');
   }
 
   ngOnInit(): void {
+    this.overlayContainer.getContainerElement().classList.add('app-' + this.appId + '-theme');
 
     this.userSub = this.store
       .select('auth')
