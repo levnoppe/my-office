@@ -1,0 +1,40 @@
+<div class="row" style="margin-top: 20px" class="app-{{appId}}-theme">
+  <div class="col-xs-12 col-md-10 col-md-offset-1">
+    <ng-template appPlaceholder></ng-template>
+    <div *ngIf="isLoading" style="text-align: center;">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+
+
+    <form [formGroup]='authForm' (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+      <div class="mat-headline">User login</div>
+        <mat-form-field appearance="fill" style="width: 300px; margin-right: 20px">
+          <mat-label>Enter your email</mat-label>
+          <input matInput
+                 placeholder="pat@example.com"
+                 formControlName="email"
+
+                >
+          <mat-error >{{getErrorMessage('email')}}</mat-error>
+        </mat-form-field>
+      <mat-form-field appearance="fill" style="width: 300px" >
+          <mat-label>Enter password</mat-label>
+          <input matInput
+                 placeholder="password"
+                 formControlName="password"
+
+          >
+          <mat-error >{{getErrorMessage('password')}}</mat-error>
+        </mat-form-field>
+      <div style="display: block;">
+        <button mat-raised-button style="margin: 5px"
+                type="submit"
+                color="primary">{{ isLoginMode ? 'Login' : 'Sign Up' }}</button>
+
+        <a mat-button
+                (click)="onSwitchMode()">Switch to {{ isLoginMode ? 'Sign Up' : 'Login' }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+

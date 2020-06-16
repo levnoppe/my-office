@@ -1,0 +1,59 @@
+<div class="app-{{appId}}-theme" >
+
+  <div class="mat-headline">My Blog</div>
+  <div class="container-fluid">
+    <div class="mat-headline">New Post</div>
+    <app-post-item [editMode]="'new'">
+    </app-post-item>
+  </div>
+  <mat-divider style="margin-top: 20px"></mat-divider>
+
+  <div class="container">
+    <div class="row">
+
+      <div class="mat-headline col-xs-12 col-sm-3">All Posts ({{ postsFeed.length }})</div>
+
+      <mat-form-field class="posts-headline col-xs-12 col-sm-3" color="warn">
+        <mat-label>Filter Posts Feed:</mat-label>
+        <input #filterTextInput matInput type="text" (keyup)="onKey($event)">
+        <button mat-button
+                type="button"
+                *ngIf="postsFilter"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="onClearPostsFilter(filterTextInput)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field class="posts-headline col-xs-12 col-sm-3" color="warn">
+        <mat-label>Sort By</mat-label>
+        <mat-select [(value)]="sortingParam"
+                    (selectionChange)="onSelect()">
+          <mat-option *ngFor="let option of sortOptions"
+                      [value]="option.value"
+          >
+            {{option.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-slide-toggle color="warn" class="posts-headline col-xs-12 col-sm-3"
+                        [checked]="sortingDirection"
+                        (change)="onReverse($event)">Reverse Order
+      </mat-slide-toggle>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top:20px">
+  <div *ngIf="postsFeed.length > 0" class="row">
+    <app-post-item *ngFor="let post of postsFeed; let i = index"
+                   [editMode]="'readonly'"
+                   [post]="post"
+                   class="col-xs-12 col-md-10 col-md-offset-1">
+    </app-post-item>
+  </div>
+  </div>
+</div>
+

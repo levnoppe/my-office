@@ -1,0 +1,26 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-list-item {
+  color: white !important;
+}
+
+.mat-icon {
+  margine: 10px;
+  font-size: 15px;
+  height: 15px;
+}
+
+.menu-button {
+  margin: 20px;
+  font-size: 40px;
+  height: 40px;
+  color: white;
+}
+

@@ -1,0 +1,42 @@
+.mat-icon {
+  font-size: 15px;
+  height: 15px;
+  width:20px;
+}
+.mat-card-image {
+  /*width: 200px;*/
+  padding: 5px;
+  box-shadow: #777777 1px 1px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  width: 80%;
+}
+
+.mat-headline {
+  margin-top: 30px;
+
+}
+.posts-headline {
+  margin-top: 30px;
+}
+
+mat-slide-toggle{
+  padding-top: 10px;
+}
+
+.center-bold{
+  font-weight: bold;
+  text-align: center;
+  font-size: large;
+}
+
+.name{
+  font-size: x-large;
+}
+
+.mat-card-actions{
+  text-align: center;
+}
+

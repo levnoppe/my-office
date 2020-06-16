@@ -1,0 +1,45 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/_theming.scss';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "app/themes/custom.components.theme";
+@import "app/themes/custom.components.light.theme";
+
+@mixin my-components-theme($theme) {
+  @include custom-component-theme($theme);
+}
+@mixin my-components-light-theme($theme) {
+  @include custom-component-light-theme($theme);
+}
+
+.app-theme1-theme {
+  $my-app-primary: mat-palette($mat-blue-gray, 700, 200, 500);
+  $my-app-accent: mat-palette($mat-blue-gray, 400, 200, 500);
+  $my-app-warn: mat-palette($mat-blue-gray, 400, 200, 500);
+  $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+
+  $background: map-get($my-app-theme, background);
+  $background-color: mat-color($mat-blue-gray,60);
+  //$background-color:mat-color(map-get($background-color,700));
+  $background: map_merge($background, (background: $background-color));
+  $my-app-theme: map_merge($my-app-theme, (background: $background));
+
+  @include angular-material-theme($my-app-theme);
+  @include my-components-theme($my-app-theme);
+  @include my-components-light-theme($my-app-theme);
+
+}
+
+.app-theme2-theme {
+  $alternate-primary: mat-palette($mat-red, 400, 200, 500);
+  $alternate-accent: mat-palette($mat-red, 400, 200, 500);
+  $alternate-warn: mat-palette($mat-red, 400, 200, 500);
+  $alternate-theme: mat-dark-theme($alternate-primary, $alternate-accent, $alternate-warn);
+  @include angular-material-theme($alternate-theme);
+  @include my-components-theme($alternate-theme);
+}
+
+mat-nav-list.list-horizontal {
+  display: flex;
+  flex-direction: row;
+}
+

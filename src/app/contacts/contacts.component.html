@@ -1,0 +1,108 @@
+<div class="row app-{{appId}}-theme">
+  <div class="col-xs-12">
+    <div class="mat-headline">My Contacts ({{ myContactsFeed.length}}) </div>
+    <mat-grid-list [cols]="nbCols" rowHeight="35em" *ngIf="myContactsFeed.length > 0">
+      <mat-grid-tile *ngFor="let contact of myContactsFeed">
+        <mat-card class="example-card" style="min-width: 300px">
+          <img mat-card-image
+               [src]="contact.picture.large"
+               [alt]="contact.name.last"
+          >
+          <mat-card-header >
+            <mat-card-title class="name center-bold">
+              {{ contact.name.first + ' ' + contact.name.last}}
+            </mat-card-title>
+            <mat-card-title>
+              <mat-icon> phone</mat-icon>
+              <a [href] = "'tel:' + contact.cell"> {{ contact.cell }}</a>
+            </mat-card-title>
+            <mat-card-subtitle>
+              <mat-icon>alternate_email</mat-icon>
+              <a [href] = "'mailto: ' + contact.email">{{ contact.email }}</a>
+            </mat-card-subtitle>
+            <mat-card-subtitle>
+              <mat-icon> location_on</mat-icon>
+              <a [href] = "'https://www.google.com/maps/search/?api=1&query='
+              + contact.location.country + '+'
+              + contact.location.city + '+'
+              + contact.location.street.name + '+'
+              + contact.location.street.number"
+                 target="_blank">
+                {{ contact.location.city + ', '
+              + contact.location.street.name + ' '
+              + contact.location.street.number}}
+              </a>
+            </mat-card-subtitle>
+            <mat-card-subtitle class="center-bold">{{ contact.location.country}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-actions>
+            <button
+              type="button"
+              mat-raised-button
+              style="margin: 5px"
+              color="primary"
+              (click)="onDeleteContact(contact)"
+            >REMOVE FROM MY CONTACTS</button>
+          </mat-card-actions>
+
+        </mat-card>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-divider></mat-divider>
+
+    <div class="mat-headline">All Contacts</div>
+    <mat-grid-list [cols]="nbCols" rowHeight="35em">
+      <mat-grid-tile *ngFor="let contact of contactsFeed; let i = index">
+        <mat-card class="example-card" style="min-width: 300px">
+          <img mat-card-image
+               [src]="contact.picture.large"
+               [alt]="contact.name.last"
+               >
+          <mat-card-header >
+            <mat-card-title class="name center-bold">
+                {{ contact.name.first + ' ' + contact.name.last}}
+            </mat-card-title>
+            <mat-card-title>
+              <mat-icon> phone</mat-icon>
+              <a [href] = "'tel:' + contact.cell"> {{ contact.cell }}</a>
+            </mat-card-title>
+            <mat-card-subtitle>
+              <mat-icon>alternate_email</mat-icon>
+              <a [href] = "'mailto: ' + contact.email">{{ contact.email }}</a>
+            </mat-card-subtitle>
+            <mat-card-subtitle>
+              <mat-icon> location_on</mat-icon>
+              <a [href] = "'https://www.google.com/maps/search/?api=1&query='
+              + contact.location.country + '+'
+              + contact.location.city + '+'
+              + contact.location.street.name + '+'
+              + contact.location.street.number"
+              target="_blank">
+              {{ contact.location.city + ', '
+              + contact.location.street.name + ' '
+              + contact.location.street.number}}
+              </a>
+            </mat-card-subtitle>
+            <mat-card-subtitle class="center-bold">{{ contact.location.country}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-actions>
+            <button
+              type="button"
+               mat-raised-button
+               style="margin: 5px"
+               color="primary"
+               (click)="onAddContact(contact)"
+            >ADD TO MY CONTACTS</button>
+          </mat-card-actions>
+
+        </mat-card>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+  </div>
+</div>
+
+
+

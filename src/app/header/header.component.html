@@ -1,0 +1,66 @@
+<div class="app-{{appId}}-theme" id="appRootClass">
+  <mat-toolbar color="warn">
+    <mat-toolbar-row>
+      <div class="center">
+        <img class="logo" src="favicon.ico" alt="Logo"/>
+        <span style="margin-left: 10px">My Office</span>
+      </div>
+      <span class="example-spacer"></span>
+
+      <div fxShow.gt-sm="true" fxHide="true">
+        <mat-nav-list class="list-horizontal">
+          <mat-list-item *ngIf="isAuthenticated">
+            <mat-icon center>lock</mat-icon>
+            <a routerLinkActive="active" (click)="onLogout()">Logout</a>
+          </mat-list-item>
+          <mat-list-item *ngIf="isAuthenticated">
+            <mat-icon center>public</mat-icon>
+            <a routerLinkActive="active"  routerLink="../"> News </a>
+          </mat-list-item>
+          <mat-list-item *ngIf="isAuthenticated">
+            <mat-icon center>account_box</mat-icon>
+            <a routerLinkActive="active" routerLink="contacts"> Contacts </a>
+          </mat-list-item>
+          <mat-list-item *ngIf="isAuthenticated">
+            <mat-icon center>chat</mat-icon>
+            <a routerLinkActive="active" routerLink="posts"> Blog </a>
+          </mat-list-item>
+          <mat-list-item *ngIf="isAuthenticated">
+            <mat-icon center>calendar_today</mat-icon>
+            <a routerLinkActive="active" routerLink="../"> Tasks </a>
+          </mat-list-item>
+          <mat-list-item>
+            <button mat-button [matMenuTriggerFor]="menu">
+              <mat-icon>format_color_fill</mat-icon>
+              Style
+            </button>
+          </mat-list-item>
+        </mat-nav-list>
+        <mat-menu #menu="matMenu">
+          <button value='theme1' mat-menu-item (click)="switchTheme('theme1')">Theme 1</button>
+          <button value='theme2' mat-menu-item (click)="switchTheme('theme2')">Theme 2</button>
+        </mat-menu>
+      </div>
+      <div fxShow="true" fxHide.gt-sm="true">
+        <button mat-button [matMenuTriggerFor]="dropMenu">
+          <mat-icon class="menu-button">menu</mat-icon>
+        </button>
+        <mat-menu #dropMenu="matMenu" fxShow="false" fxHide.gt-sm="true">
+          <button *ngIf="isAuthenticated" mat-menu-item (click)="onLogout()">Logout</button>
+          <button *ngIf="isAuthenticated" mat-menu-item routerLink="../">News</button>
+          <button *ngIf="isAuthenticated" mat-menu-item routerLink="contacts">Contacts</button>
+          <button *ngIf="isAuthenticated" mat-menu-item routerLink="posts">Blog</button>
+          <button *ngIf="isAuthenticated" mat-menu-item routerLink="../">Tasks</button>
+          <button mat-menu-item [matMenuTriggerFor]="styleSubMenu">Style</button>
+        </mat-menu>
+        <mat-menu #styleSubMenu="matMenu" fxShow="false" fxHide.gt-sm="true">
+          <button value='theme1' mat-menu-item (click)="switchTheme('theme1')">Theme 1</button>
+          <button value='theme2' mat-menu-item (click)="switchTheme('theme2')">Theme 2</button>
+        </mat-menu>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>
+
+
+
