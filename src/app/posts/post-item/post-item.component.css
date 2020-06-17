@@ -1,3 +1,17 @@
 textarea[cdktextareaautosize].mat-input-element {
   overflow: hidden;
 }
+
+.post-title{
+  line-height: 1.5;
+  font-weight: bold;
+  font-family: Source Sans Pro,system-ui,BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  width: 800px;
+  font-size: larger;
+}
+
+.post-content{
+  line-height: 1.5;
+  font-family: Source Sans Pro,system-ui,BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+}
+

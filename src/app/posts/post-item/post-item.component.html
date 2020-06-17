@@ -8,15 +8,15 @@
     </mat-card-subtitle>
     <mat-form-field
       [appearance]="editMode == 'readonly' ? 'none': 'outline'"
-      class="col-xs-10"
+      class="col-xs-10 no-padding"
+      style="padding: -10px !important;"
     >
       <input matInput
              [readonly]="editMode == 'readonly'"
-             style="width: 800px; font-size: large"
              [textContent]="post.title"
              [placeholder]="editMode == 'readonly' ? '': 'title'"
              formControlName="title"
-
+             class="post-title"
       />
     </mat-form-field>
     <mat-checkbox
@@ -34,7 +34,7 @@
                 [readonly]="editMode == 'readonly'"
                 [placeholder]="editMode == 'readonly' ? '': 'write your message here'"
                 formControlName="body"
-                class="col-xs-12"
+                class="col-xs-12 post-content"
       ></textarea>
     </mat-form-field>
     <br>
