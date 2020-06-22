@@ -1,0 +1,74 @@
+<form [formGroup]="newTaskForm" (ngSubmit)="onSubmit()">
+<h1> New Task</h1>
+<div mat-dialog-content>
+  <div class="row">
+    <mat-form-field appearance="fill" class="example-form-field col-xs-10">
+      <mat-label>Task Name</mat-label>
+      <input matInput
+             placeholder="New Task"
+             type="text"
+             formControlName = "title"
+      >
+      <button mat-button
+              matSuffix mat-icon-button
+              aria-label="Clear"
+              *ngIf="task.title"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="task.title =''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-checkbox
+      class="col-xs-2"
+      formControlName = "alert"
+    >Alert</mat-checkbox>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="fill" class="example-form-field col-xs-6">
+      <input matInput [ngxMatDatetimePicker]="picker"
+             placeholder="Choose a date"
+             formControlName="date"
+      >
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker
+                               [showSpinners]="showSpinners"
+                               [showSeconds]="showSeconds"
+                               [touchUi]="touchUi"
+                               color="primary"
+                               [hideTime]="hideTime">
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="example-form-field col-xs-6">
+      <mat-label>Choose Category</mat-label>
+      <mat-select
+                  (selectionChange) = "onSelect()"
+                  formControlName = "taskCategory"
+      >
+        <mat-option *ngFor="let category of categoriesCollection"
+                    [value]="category"
+                    [style.background]="category.color"
+        >
+          {{category.categoryName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button
+          style="margin: 5px"
+          color="warn"
+          cdkFocusInitial>Add Task</button>
+  <button  mat-raised-button
+           type="button"
+           style="margin: 5px"
+           color="primary" (click)="onNoClick()">Cancel</button>
+
+</div>
+</form>
+

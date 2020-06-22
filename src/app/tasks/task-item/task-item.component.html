@@ -1,0 +1,56 @@
+<form [formGroup]="taskForm">
+<mat-card class="example-card col-xs-12"
+          [style.background]="task.taskCategory.color"
+>
+  <div class="row border rounded">
+    <mat-form-field appearance="none" class="example-form-field col-xs-3 small-padding">
+      <input matInput [ngxMatDatetimePicker]="picker"
+             placeholder="Choose a date"
+             formControlName="date"
+      >
+      <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker
+                               [showSpinners]="true"
+                               [showSeconds]="false"
+                               [touchUi]="true"
+                               color="primary"
+                               [hideTime]="false">
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <mat-form-field appearance="none" class="example-form-field col-xs-5 small-padding">
+      <input matInput
+             placeholder="New Task"
+             type="text"
+             formControlName = "title"
+      >
+
+    </mat-form-field>
+    <mat-checkbox      class="col-xs-2 alert-checkbox"
+      formControlName = "alert"
+    >Alert</mat-checkbox>
+    <div class="col-xs-2 small-padding">
+      <button
+              class="catBtn"
+              type="button"
+              mat-raised-button
+              color="accent"
+              [disabled] = "!taskForm.touched"
+              (click)="onUpdateTask()"
+      >
+        <mat-icon>save</mat-icon>
+      </button>
+      <button
+              class="catBtn"
+              type="button"
+              mat-raised-button
+              color="accent"
+              (click)="onDeleteTask()"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+
+</mat-card>
+</form>

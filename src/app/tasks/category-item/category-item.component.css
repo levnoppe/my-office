@@ -1,0 +1,27 @@
+.color-picker{
+  margin: 10px 5px auto 5px;
+  width: 40px;
+  min-width: 30px;
+  height: 40px;
+  cursor: pointer;
+  border: solid gray 1px;
+}
+
+.color-container{
+height: 50px !important;
+}
+
+.catBtn{
+  width:40px !important;
+  height:40px !important;
+  margin: 10px 5px auto 5px;
+}
+
+.mat-raised-button{
+  min-width: 40px;
+  padding: 0;
+}
+
+.mat-form-field-wrapper{
+  padding-bottom: 0 !important;
+}

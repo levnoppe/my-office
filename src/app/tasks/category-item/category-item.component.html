@@ -1,0 +1,64 @@
+<form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+  <mat-card class="example-card">
+    <div class="row">
+      <mat-form-field
+        appearance="outline"
+        class="col-xs-6"
+      >
+        <input matInput
+               [textContent]="taskCategory.categoryName"
+               placeholder="categoryName"
+               formControlName="categoryName"
+        />
+      </mat-form-field>
+      <div class="col-xs-2">
+        <input matInput class="color-picker  img-rounded"
+               [(colorPicker)]="color"
+               [style.background]="color"
+               formControlName="color"
+               (colorPickerChange)="onColorPicked()"
+               [placeholder]="'color'"
+               [style.color]="color"
+        />
+      </div>
+
+      <div class="col-xs-4">
+        <button *ngIf="editMode === 'new'"
+                class="catBtn"
+                type="submit"
+                mat-raised-button
+                color="primary"
+                [disabled] = "!categoryForm.valid"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+        <span *ngIf="!categoryForm.valid && categoryForm.touched"
+              class="help-block">Please fill all fields</span>
+        <button *ngIf="editMode === 'edit'"
+                class="catBtn"
+                type="button"
+                mat-raised-button
+                color="accent"
+                [disabled] = "!categoryForm.touched"
+                (click)="onUpdateCategory()"
+        >
+          <mat-icon>save</mat-icon>
+        </button>
+        <button *ngIf="editMode === 'edit'"
+                class="catBtn"
+                type="button"
+                mat-raised-button
+                color="accent"
+                (click)="onDeleteCategory()"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </mat-card>
+</form>
+
+
+
+
