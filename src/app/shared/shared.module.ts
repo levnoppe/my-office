@@ -19,13 +19,18 @@ import { SharedComponent } from './shared.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
+import {ColorPickerModule} from 'ngx-color-picker';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
     LoadingSpinnerComponent,
     AlertComponent,
     PlaceholderDirective,
-    SharedComponent,
+    SharedComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +49,12 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatProgressSpinnerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
+    ColorPickerModule
   ],
   exports: [
     SharedComponent,
@@ -67,7 +77,13 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
+    ColorPickerModule
   ]
 })
 

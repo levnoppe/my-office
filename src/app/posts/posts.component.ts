@@ -5,7 +5,7 @@ import * as fromApp from '../store/app.reducer';
 import {Post} from './post.model';
 import * as PostsActions from '../posts/store/posts.actions';
 import {map} from 'rxjs/operators';
-import {sortFunc} from '../shared/shared.component';
+import {UtilService} from '../shared/util-service/util.service';
 
 interface SortOption {
   value: string;
@@ -34,27 +34,38 @@ export class PostsComponent implements OnInit, OnDestroy {
     {value: 'publicState', viewValue: 'Public'}
   ];
 
-  constructor(private store: Store<fromApp.AppState>) {
+  constructor(private store: Store<fromApp.AppState>,
+              private utilService: UtilService) {
   }
 
   onSelect(){
-    this.postsFeed = this.postsFeed.slice().sort(this.compare);
+    // this.postsFeed = this.postsFeed.slice().sort(this.compare);
+    this.postsFeed = this.utilService.sortingObjectsArray(
+      this.postsFeed,
+      this.sortingParam,
+      this.sortingDirection
+    );
   }
 
   onReverse(event: any){
     this.sortingDirection =  event.checked;
-    this.postsFeed = this.postsFeed.slice().sort(this.compare);
+    // this.postsFeed = this.postsFeed.slice().sort(this.compare);
+    this.postsFeed = this.utilService.sortingObjectsArray(
+      this.postsFeed,
+      this.sortingParam,
+      this.sortingDirection
+    );
   }
-  compare = ( a: Post, b: Post ) => {
-    const param = this.sortingParam;
-    if ( a[param] > b[param] ){
-      return this.sortingDirection ? -1 : 1;
-    }
-    if ( a[param] < b[param] ){
-      return this.sortingDirection ? 1 : -1;
-    }
-    return 0;
-  }
+  // compare = ( a: Post, b: Post ) => {
+  //   const param = this.sortingParam;
+  //   if ( a[param] > b[param] ){
+  //     return this.sortingDirection ? -1 : 1;
+  //   }
+  //   if ( a[param] < b[param] ){
+  //     return this.sortingDirection ? 1 : -1;
+  //   }
+  //   return 0;
+  // }
 
 
   ngOnInit(): void {
@@ -74,7 +85,12 @@ export class PostsComponent implements OnInit, OnDestroy {
                 || post.body.indexOf(this.postsFilter) !== -1);
             });
           }
-          this.postsFeed = posts.slice().sort(this.compare);
+          // this.postsFeed = posts.slice().sort(this.compare);
+          this.postsFeed = this.utilService.sortingObjectsArray(
+            posts,
+            this.sortingParam,
+            this.sortingDirection
+          );
         }
       );
   }

@@ -14,7 +14,17 @@
   //  background-color: mat-color($accent);
   //}
   //
-  .article-provider{
+  .article-provider {
     color: mat-color($primary);
+  }
+
+  app-category-item {
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+
+    .mat-card {
+      padding: 1px 10px 1px 10px;
+    }
   }
 }

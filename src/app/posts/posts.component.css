@@ -20,4 +20,7 @@ mat-slide-toggle{
   margin: 20px 0 0 10px
 }
 
+.small-padding{
+  padding:1px !important;
+}
 

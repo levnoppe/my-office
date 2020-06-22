@@ -19,6 +19,7 @@ import {environment} from '../environments/environment';
 import {ContactsEffects} from './contacts/store/contacts.effects';
 import {SharedEffects} from './shared/store/shared.effects';
 import {PostsEffects} from './posts/store/posts.effects';
+import {TasksEffects} from './tasks/store/tasks.effects';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {PostsEffects} from './posts/store/posts.effects';
       AuthEffects,
       ContactsEffects,
       SharedEffects,
-      PostsEffects
+      PostsEffects,
+      TasksEffects
     ]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({logOnly: environment.production}),

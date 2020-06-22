@@ -27,7 +27,7 @@
           </mat-list-item>
           <mat-list-item *ngIf="isAuthenticated">
             <mat-icon center>calendar_today</mat-icon>
-            <a routerLinkActive="active" routerLink="../"> Tasks </a>
+            <a routerLinkActive="active" routerLink="tasks"> Tasks </a>
           </mat-list-item>
           <mat-list-item>
             <button mat-button [matMenuTriggerFor]="menu">
@@ -50,7 +50,7 @@
           <button *ngIf="isAuthenticated" mat-menu-item routerLink="../">News</button>
           <button *ngIf="isAuthenticated" mat-menu-item routerLink="contacts">Contacts</button>
           <button *ngIf="isAuthenticated" mat-menu-item routerLink="posts">Blog</button>
-          <button *ngIf="isAuthenticated" mat-menu-item routerLink="../">Tasks</button>
+          <button *ngIf="isAuthenticated" mat-menu-item routerLink="tasks">Tasks</button>
           <button mat-menu-item [matMenuTriggerFor]="styleSubMenu">Style</button>
         </mat-menu>
         <mat-menu #styleSubMenu="matMenu" fxShow="false" fxHide.gt-sm="true">
