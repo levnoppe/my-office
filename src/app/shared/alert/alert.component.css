@@ -22,3 +22,9 @@
 .alert-box-actions{
   text-align: right;
 }
+
+.mat-icon{
+  margin: 0 10px 0 10px;
+  font-size: 25px;
+  vertical-align: bottom;
+}

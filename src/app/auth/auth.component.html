@@ -1,11 +1,8 @@
 <div class="app-{{appId}}-theme container"  style="height: 100vh">
 
   <ng-template appPlaceholder></ng-template>
-<!--  <div *ngIf="isLoading" style="text-align: center;">-->
-<!--    <app-loading-spinner></app-loading-spinner>-->
-
     <mat-spinner *ngIf="isLoading" style="margin:30vh auto auto auto;"></mat-spinner>
-<!--  </div>-->
+
 
   <div *ngIf="!isLoading"
     class="mat-headline col-xs-12 col-md-10 col-md-offset-1"

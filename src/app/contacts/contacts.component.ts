@@ -1,12 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject, Subscription} from 'rxjs';
+import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Subscription} from 'rxjs';
 import {Contact} from './RandomUserApi/randomUserApi.model';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
 import {RandomUserApiService} from './RandomUserApi/randomUserApi.service';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import * as ContactsActions from './store/contacts.actions';
-import {map} from 'rxjs/operators';
+import {State} from './store/contacts.reducer';
+import {AlertComponent} from '../shared/alert/alert.component';
+import {PlaceholderDirective} from '../shared/placeholder/placeholder.directive';
 
 @Component({
   selector: 'app-contacts',
@@ -14,7 +16,10 @@ import {map} from 'rxjs/operators';
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit, OnDestroy {
-  error = new Subject<string>();
+  @ViewChild(PlaceholderDirective, {static: false}) alertHost: PlaceholderDirective;
+  isLoading = false;
+  error: string = null;
+  private closeSub: Subscription;
   private themeSub: Subscription;
   appId = 'theme2';
   contactsFeed: Contact[] = [];
@@ -26,7 +31,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<fromApp.AppState>,
               private randomUserApiService: RandomUserApiService,
-              private mediaObserver: MediaObserver ) {
+              private mediaObserver: MediaObserver,
+              private componentFactoryResolver: ComponentFactoryResolver) {
 
   }
 
@@ -50,10 +56,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(new ContactsActions.FetchContacts());
     this.myContactsSub = this.store.select('contacts')
-      .pipe(map(contactsState => contactsState.contacts))
       .subscribe(
-        (contacts: Contact[]) => {
-          this.myContactsFeed = contacts;
+        (contactsState: State) => {
+          this.isLoading = contactsState.loading;
+          this.error = contactsState.contactsError;
+          if (this.error){
+            this.showErrorAlert(this.error);
+          }
+          this.myContactsFeed = contactsState.contacts;
         }
       );
 
@@ -61,8 +71,23 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.contactsFeed = contacts;
     }, error => {
       this.error = error.message;
+      this.showErrorAlert(error.message);
     });
 
+  }
+
+  private showErrorAlert(message: string) {
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+
+    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+
+    componentRef.instance.message = message;
+    this.closeSub = componentRef.instance.close.subscribe(() => {
+      this.closeSub.unsubscribe();
+      hostViewContainerRef.clear();
+    });
   }
 
   onAddContact(contact: Contact){
@@ -70,10 +95,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   onDeleteContact(contact: Contact){
-    this.store.dispatch(new ContactsActions.DeleteContact(contact));
+    this.store.dispatch(new ContactsActions.DeleteContact(contact.id));
   }
 
   ngOnDestroy() {
+    if (this.closeSub){
+      this.closeSub.unsubscribe();
+    }
+
     this.themeSub.unsubscribe();
     this.myContactsSub.unsubscribe();
     this.watcher.unsubscribe();

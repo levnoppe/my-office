@@ -1,68 +1,73 @@
 <div class="app-{{appId}}-theme">
-
-  <div class="mat-headline">
-    <mat-icon center>message</mat-icon>
-    My Blog
-  </div>
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 col-md-2 small-padding">
-      <h3><mat-icon center>edit</mat-icon>New Post</h3>
+  <ng-template appPlaceholder></ng-template>
+  <mat-spinner *ngIf="isLoading" style="margin:30vh auto auto auto;"></mat-spinner>
+  <div *ngIf="!isLoading">
+    <div class="mat-headline">
+      <mat-icon center>message</mat-icon>
+      My Blog
     </div>
-    <div class="col-xs-12 col-md-8">
-      <app-post-item [editMode]="'new'">
-      </app-post-item>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-2 small-padding">
+          <h3><mat-icon center>edit</mat-icon>New Post</h3>
+        </div>
+        <div class="col-xs-12 col-md-8">
+          <app-post-item [editMode]="'new'">
+          </app-post-item>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-  <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
 
-  <div class="container">
-    <div class="row">
-      <h3 class=" col-xs-12 col-sm-2">All Posts ({{ postsFeed.length }})</h3>
+    <div class="container">
+      <div class="row">
+        <h3 class=" col-xs-12 col-sm-2">All Posts ({{postsFeed ? postsFeed.length : 0 }})</h3>
 
-      <mat-form-field class="posts-headline col-xs-12 col-sm-3" color="warn">
-        <mat-label>Filter Posts Feed:</mat-label>
-        <input #filterTextInput matInput type="text" (keyup)="onKey($event)">
-        <button mat-button
-                type="button"
-                *ngIf="postsFilter"
-                matSuffix
-                mat-icon-button
-                aria-label="Clear"
-                (click)="onClearPostsFilter(filterTextInput)">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+        <mat-form-field class="posts-headline col-xs-12 col-sm-3" color="warn">
+          <mat-label>Filter Posts Feed:</mat-label>
+          <input #filterTextInput matInput type="text" (keyup)="onKey($event)">
+          <button mat-button
+                  type="button"
+                  *ngIf="postsFilter"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                  (click)="onClearPostsFilter(filterTextInput)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
 
-      <mat-form-field class="posts-headline col-xs-12 col-sm-3" color="warn">
-        <mat-label>Sort By</mat-label>
-        <mat-select [(value)]="sortingParam"
-                    (selectionChange)="onSelect()">
-          <mat-option *ngFor="let option of sortOptions"
-                      [value]="option.value"
-          >
-            {{option.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field class="posts-headline col-xs-12 col-sm-3" color="warn">
+          <mat-label>Sort By</mat-label>
+          <mat-select [(value)]="sortingParam"
+                      (selectionChange)="onSelect()">
+            <mat-option *ngFor="let option of sortOptions"
+                        [value]="option.value"
+            >
+              {{option.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-slide-toggle color="warn" class=" col-xs-12 col-sm-3"
-                        [checked]="sortingDirection"
-                        (change)="onReverse($event)">Reverse Order
-      </mat-slide-toggle>
+        <mat-slide-toggle color="warn" class=" col-xs-12 col-sm-3"
+                          [checked]="sortingDirection"
+                          (change)="onReverse($event)">Reverse Order
+        </mat-slide-toggle>
+      </div>
     </div>
+
+    <div class="container" style="margin-top:20px">
+      <div *ngIf="postsFeed ? postsFeed.length : 0 > 0" class="row">
+        <app-post-item *ngFor="let post of postsFeed; let i = index"
+                       [editMode]="'readonly'"
+                       [post]="post"
+                       class="col-xs-12 col-md-10 col-md-offset-1">
+        </app-post-item>
+      </div>
+    </div>
+
   </div>
 
-  <div class="container" style="margin-top:20px">
-    <div *ngIf="postsFeed.length > 0" class="row">
-      <app-post-item *ngFor="let post of postsFeed; let i = index"
-                     [editMode]="'readonly'"
-                     [post]="post"
-                     class="col-xs-12 col-md-10 col-md-offset-1">
-      </app-post-item>
-    </div>
-  </div>
 </div>
 

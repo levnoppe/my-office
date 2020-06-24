@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
 import {AlertComponent} from './alert/alert.component';
 import {PlaceholderDirective} from './placeholder/placeholder.directive';
 import {CommonModule} from '@angular/common';
@@ -27,7 +26,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
-    LoadingSpinnerComponent,
     AlertComponent,
     PlaceholderDirective,
     SharedComponent
@@ -58,7 +56,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   ],
   exports: [
     SharedComponent,
-    LoadingSpinnerComponent,
     AlertComponent,
     PlaceholderDirective,
     CommonModule,

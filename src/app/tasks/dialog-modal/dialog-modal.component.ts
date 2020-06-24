@@ -79,6 +79,5 @@ export class DialogModalComponent implements OnInit{
   }
 
   onSelect() {
-    // console.log(this.selectedCategory);
   }
 }

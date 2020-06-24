@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Post} from '../post.model';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
@@ -73,6 +73,7 @@ export class PostItemComponent implements OnInit {
         newPost: this.postForm.value
       })
     );
+    this.editMode = 'readonly';
   }
 
   onCancelEdit(){

@@ -26,6 +26,7 @@ export class BingNewsApiService {
     const query = this.serialize(params);
     return query ? endpoint.concat('?').concat(query) : endpoint;
   }
+
   fetchArticles() {
     const endpoint = 'https://news-search-domain.cognitiveservices.azure.com/bing/v7.0/news';
     const params = {};

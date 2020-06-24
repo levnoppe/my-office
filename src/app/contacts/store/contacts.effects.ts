@@ -1,11 +1,43 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import * as ContactsActions from './contacts.actions';
-import {map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {catchError, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import {Contact} from '../RandomUserApi/randomUserApi.model';
 import {HttpClient} from '@angular/common/http';
+import {of} from 'rxjs';
+import * as PostsActions from '../../posts/store/posts.actions';
+
+const handleError = (errorRes: any, store: Store) => {
+  let errorMessage = 'An unknown error occurred.';
+  if (!errorRes.error || !errorRes.error.error) {
+    return of(store.dispatch(new ContactsActions.ContactsError(errorMessage)));
+  }
+  errorMessage = 'My Contacts Error: ' +
+                  errorRes.status +
+                  ' ' +
+                  errorRes.statusText +
+                  '(' +
+                  errorRes.error.error +
+                  ')';
+  return of(store.dispatch(new ContactsActions.ContactsError(errorMessage)));
+};
+
+const handleFetchError = (errorRes: any) => {
+  let errorMessage = 'An unknown error occurred.';
+  if (!errorRes.error || !errorRes.error.error) {
+    return of(new ContactsActions.ContactsError(errorMessage));
+  }
+  errorMessage = 'My Contacts Error: ' +
+                  errorRes.status +
+                  ' ' +
+                  errorRes.statusText +
+                  '(' +
+                  errorRes.error.error +
+                  ')';
+  return of(new ContactsActions.ContactsError(errorMessage));
+};
 
 @Injectable()
 export class ContactsEffects {
@@ -21,8 +53,7 @@ export class ContactsEffects {
   fetchContacts = this.actions$.pipe(
     ofType(ContactsActions.FETCH_CONTACTS),
     switchMap(() => {
-      return this.http
-        .get<Contact[]>(
+      return this.http.get<Contact[]>(
           'https://my-office-1cd4e.firebaseio.com/contacts.json'
         );
     }),
@@ -34,6 +65,9 @@ export class ContactsEffects {
         }
       }
       return new ContactsActions.LoadContacts(contactsArray);
+    }),
+    catchError(errorRes => {
+      return handleFetchError(errorRes);
     })
   );
 
@@ -45,11 +79,19 @@ export class ContactsEffects {
       return this.http.post(
         'https://my-office-1cd4e.firebaseio.com/contacts.json?auth=' +
         authState.user.token,
-        action.payload);
+        action.payload
+      ).pipe(
+        tap((res: {name}) => {
+          this.store.dispatch(new ContactsActions.GetKey(res.name));
+        }),
+        catchError(errorRes => {
+          return handleError(errorRes, this.store);
+        })
+      );
     }),
-    tap(() => {
-      this.store.dispatch(new ContactsActions.FetchContacts());
-    })
+    // tap(() => {
+    //   this.store.dispatch(new ContactsActions.FetchContacts());
+    // })
   );
 
   @Effect({dispatch: false})
@@ -59,13 +101,17 @@ export class ContactsEffects {
     switchMap(([action, authState]) => {
       return this.http.delete(
         'https://my-office-1cd4e.firebaseio.com/contacts/' +
-        action.payload.id +
+        action.payload +
         '.json'
+      ).pipe(
+        catchError(errorRes => {
+          return handleError(errorRes, this.store);
+        })
       );
     }),
-    tap(() => {
-      this.store.dispatch(new ContactsActions.FetchContacts());
-    })
+    // tap(() => {
+    //   this.store.dispatch(new ContactsActions.FetchContacts());
+    // })
   );
 }
 

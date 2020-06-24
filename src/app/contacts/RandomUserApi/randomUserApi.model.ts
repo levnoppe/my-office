@@ -10,7 +10,7 @@ export interface Contact {
       location?: {
           street?: {
             name?: string,
-            nunmber?: string
+            number?: string
           },
         city?: string ,
         state?: string ,

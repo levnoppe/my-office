@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ComponentFactoryResolver, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject, Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
@@ -6,6 +6,9 @@ import {Post} from './post.model';
 import * as PostsActions from '../posts/store/posts.actions';
 import {map} from 'rxjs/operators';
 import {UtilService} from '../shared/util-service/util.service';
+import {PlaceholderDirective} from '../shared/placeholder/placeholder.directive';
+import {State} from './store/posts.reducer';
+import {AlertComponent} from '../shared/alert/alert.component';
 
 interface SortOption {
   value: string;
@@ -18,7 +21,11 @@ interface SortOption {
   styleUrls: ['./posts.component.css']
 })
 export class PostsComponent implements OnInit, OnDestroy {
-  error = new Subject<string>();
+  @ViewChild(PlaceholderDirective, {static: false}) alertHost: PlaceholderDirective;
+  isLoading = false;
+  error: string = null;
+  private closeSub: Subscription;
+
   private themeSub: Subscription;
   private postsSub: Subscription;
   appId = 'theme2';
@@ -35,11 +42,11 @@ export class PostsComponent implements OnInit, OnDestroy {
   ];
 
   constructor(private store: Store<fromApp.AppState>,
-              private utilService: UtilService) {
+              private utilService: UtilService,
+              private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
   onSelect(){
-    // this.postsFeed = this.postsFeed.slice().sort(this.compare);
     this.postsFeed = this.utilService.sortingObjectsArray(
       this.postsFeed,
       this.sortingParam,
@@ -49,25 +56,12 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   onReverse(event: any){
     this.sortingDirection =  event.checked;
-    // this.postsFeed = this.postsFeed.slice().sort(this.compare);
     this.postsFeed = this.utilService.sortingObjectsArray(
       this.postsFeed,
       this.sortingParam,
       this.sortingDirection
     );
   }
-  // compare = ( a: Post, b: Post ) => {
-  //   const param = this.sortingParam;
-  //   if ( a[param] > b[param] ){
-  //     return this.sortingDirection ? -1 : 1;
-  //   }
-  //   if ( a[param] < b[param] ){
-  //     return this.sortingDirection ? 1 : -1;
-  //   }
-  //   return 0;
-  // }
-
-
   ngOnInit(): void {
     this.themeSub = this.store.select('shared').subscribe(sharedState => {
       this.appId = sharedState.theme;
@@ -75,24 +69,44 @@ export class PostsComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(new PostsActions.FetchPosts());
     this.postsSub = this.store.select('posts')
-      .pipe(map(postsState => postsState.posts))
+      // .pipe(map(postsState => postsState.posts))
       .subscribe(
-        (posts: Post[]) => {
-          this.unfilteredPostsFeed = posts;
-          if (this.postsFilter) {
-            posts = posts.filter((post) => {
-              return (post.title.indexOf(this.postsFilter) !== -1
-                || post.body.indexOf(this.postsFilter) !== -1);
-            });
+        (postsState: State) => {
+          this.isLoading = postsState.loading;
+          this.error = postsState.postsError;
+          if (this.error){
+            this.showErrorAlert(this.error);
           }
-          // this.postsFeed = posts.slice().sort(this.compare);
-          this.postsFeed = this.utilService.sortingObjectsArray(
-            posts,
-            this.sortingParam,
-            this.sortingDirection
-          );
+          if (postsState.posts){
+            this.unfilteredPostsFeed = postsState.posts;
+            if (this.postsFilter) {
+              postsState.posts = postsState.posts.filter((post) => {
+                return (post.title.indexOf(this.postsFilter) !== -1
+                  || post.body.indexOf(this.postsFilter) !== -1);
+              });
+            }
+            this.postsFeed = this.utilService.sortingObjectsArray(
+              postsState.posts,
+              this.sortingParam,
+              this.sortingDirection
+            );
+          }
         }
       );
+  }
+
+  private showErrorAlert(message: string) {
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+
+    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+
+    componentRef.instance.message = message;
+    this.closeSub = componentRef.instance.close.subscribe(() => {
+      this.closeSub.unsubscribe();
+      hostViewContainerRef.clear();
+    });
   }
 
   onKey(event: any) { // without type info
@@ -111,6 +125,10 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.closeSub){
+      this.closeSub.unsubscribe();
+    }
+
     this.themeSub.unsubscribe();
     this.postsSub.unsubscribe();
   }

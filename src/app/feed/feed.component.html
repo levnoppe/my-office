@@ -1,5 +1,8 @@
 <div class="app-{{appId}}-theme container">
-  <div class="mat-headline">
+  <ng-template appPlaceholder></ng-template>
+  <mat-spinner *ngIf="isLoading" style="margin:30vh auto auto auto;"></mat-spinner>
+
+  <div class="mat-headline" *ngIf="!isLoading">
     <mat-icon center>public</mat-icon>
     News Feed
   </div>

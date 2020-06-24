@@ -1,13 +1,42 @@
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import * as PostsActions from '../store/posts.actions';
-import {map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {catchError, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Post} from '../post.model';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
+import {of} from 'rxjs';
 
+const handleError = (errorRes: any, store: Store) => {
+  let errorMessage = 'An unknown error occurred.';
+  if (!errorRes.error || !errorRes.error.error) {
+    return of(store.dispatch(new PostsActions.PostsError(errorMessage)));
+  }
+  errorMessage = 'My Contacts Error: ' +
+    errorRes.status +
+    ' ' +
+    errorRes.statusText +
+    '(' +
+    errorRes.error.error +
+    ')';
+  return of(store.dispatch(new PostsActions.PostsError(errorMessage)));
+};
 
+const handleFetchError = (errorRes: any) => {
+  let errorMessage = 'An unknown error occurred.';
+  if (!errorRes.error || !errorRes.error.error) {
+    return of(new PostsActions.PostsError(errorMessage));
+  }
+  errorMessage = 'Loading posts error: ' +
+    errorRes.status +
+    ' ' +
+    errorRes.statusText +
+    '(' +
+    errorRes.error.error +
+    ')';
+  return of(new PostsActions.PostsError(errorMessage));
+};
 
 @Injectable()
 export class PostsEffects {
@@ -27,8 +56,10 @@ export class PostsEffects {
           postsArray.push({...posts[key], id: key});
         }
       }
-
       return new PostsActions.LoadPosts(postsArray);
+    }),
+    catchError(errorRes => {
+      return handleFetchError(errorRes);
     })
   );
 
@@ -37,13 +68,17 @@ export class PostsEffects {
     ofType(PostsActions.ADD_POST),
     withLatestFrom(this.store.select('auth')),
     switchMap(([action, authState]) => {
+      // var action.payload.in
       return this.http.post(
         'https://my-office-1cd4e.firebaseio.com/posts.json?auth=' +
         authState.user.token,
         action.payload);
     }),
-    tap(() => {
-      this.store.dispatch(new PostsActions.FetchPosts());
+    tap((res: {name}) => {
+      this.store.dispatch(new PostsActions.GetKey(res.name));
+    }),
+    catchError(errorRes => {
+      return handleError(errorRes, this.store);
     })
   );
 
@@ -59,8 +94,8 @@ export class PostsEffects {
         action.payload.newPost
       );
     }),
-    tap(() => {
-      this.store.dispatch(new PostsActions.FetchPosts());
+    catchError(errorRes => {
+      return handleError(errorRes, this.store);
     })
   );
 
@@ -75,8 +110,8 @@ export class PostsEffects {
         '.json'
       );
     }),
-    tap(() => {
-      this.store.dispatch(new PostsActions.FetchPosts());
+    catchError(errorRes => {
+      return handleError(errorRes, this.store);
     })
   );
 
