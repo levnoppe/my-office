@@ -1,8 +1,9 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {Article} from './newsApi.model';
+import {environment} from '../../../environments/environment';
 
 
 @Injectable({
@@ -34,7 +35,7 @@ export class NewsApiService {
     return this.http.get<{ [key: string]: Article }>(
       url,
       {
-        headers: new HttpHeaders({'X-Api-Key': '9595a82887484dd4b6793c98580b448b'}
+        headers: new HttpHeaders({'X-Api-Key': environment.newsOrgApiKey}
         ),
         responseType: 'json'
       }

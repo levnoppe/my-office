@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {Article} from './bingNewsApi.model';
+import {environment} from '../../../environments/environment';
 
 
 @Injectable({
@@ -35,7 +36,7 @@ export class BingNewsApiService {
     return this.http.get<{ [key: string]: Article }>(
       url,
       {
-        headers: new HttpHeaders({'Ocp-Apim-Subscription-Key': '0f78528e9a2b4bd2af46929953cde46d'}
+        headers: new HttpHeaders({'Ocp-Apim-Subscription-Key': environment.bingNewsApiKey}
         ),
         responseType: 'json'
       }

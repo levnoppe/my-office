@@ -37,7 +37,23 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 - Dynamic styles
 
-<a name="installation"></a>
+
+## Installation notes
+
+Please add to `src/` folder new folder named `environments` with two files: 
+`environment.prod.ts` and `environent.ts` for a production and development purposes.
+These files will contain the following contetnts
+`
+export const environment = {
+  production: false, // -for development and <true> for production
+  firebaseAPIKey: YOUR KEY,
+  bingNewsApiKey: YOUR KEY
+};
+`  
+Please obtain these keys by subscribing to these services:
+- `https://firebase.google.com/` - Firebase services
+- `https://docs.microsoft.com/en-us/azure/cognitive-services/bing-news-search/quickstarts/client-libraries?pivots=programming-language-javascript` - for Bing Web Search Service
+
 
 ## Development server
 
