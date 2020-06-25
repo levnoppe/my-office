@@ -1,6 +1,14 @@
 {
   "name": "my-office",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "author": "Lev Noppe <noppe.lev@gmail.com> (http://levnoppe.com)",
+  "description": "Angular 9 client side application, built with Redux state management, Angular Material components, REST API data sources management, Authentication module includes guards and interceptor service, PWA application with service worker, Dynamic styles",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/levnoppe/my-office.git"
+  },
+  "homepage": "http://levnoppe.com",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -23,6 +31,7 @@
     "@angular/platform-browser": "~9.1.9",
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
+    "@angular/service-worker": "~9.1.9",
     "@ngrx/effects": "^9.2.0",
     "@ngrx/router-store": "^9.2.0",
     "@ngrx/store": "^9.2.0",

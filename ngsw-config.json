@@ -1,0 +1,67 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
+        ]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "randomUserApi",
+      "urls": [
+        "https://randomuser.me/api/"
+      ],
+      "cacheConfig": {
+        "maxSize": 30,
+        "maxAge": "30d",
+        "timeout": "3s",
+        "strategy": "performance"
+      }
+    },
+    {
+      "name": "bingNewsApi",
+      "urls": [
+        "https://news-search-domain.cognitiveservices.azure.com/bing/v7.0/news"
+      ],
+      "cacheConfig": {
+        "maxSize": 30,
+        "maxAge": "10m",
+        "timeout": "3s",
+        "strategy": "performance"
+      }
+    },
+    {
+      "name": "firebase",
+      "urls": [
+        "https://my-office-1cd4e.firebaseio.com/"
+      ],
+      "cacheConfig": {
+        "maxSize": 200,
+        "maxAge": "1d",
+        "strategy": "freshness"
+      }
+    }
+  ]
+}

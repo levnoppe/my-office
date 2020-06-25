@@ -20,6 +20,7 @@ import {ContactsEffects} from './contacts/store/contacts.effects';
 import {SharedEffects} from './shared/store/shared.effects';
 import {PostsEffects} from './posts/store/posts.effects';
 import {TasksEffects} from './tasks/store/tasks.effects';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {TasksEffects} from './tasks/store/tasks.effects';
     ]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [],
   bootstrap: [AppComponent],

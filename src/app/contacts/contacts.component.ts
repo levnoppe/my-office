@@ -45,12 +45,23 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
 
       switch (change.mqAlias) {
-        case 'xs': this.nbCols = 1; break;
-        case 'sm': this.nbCols = 2; break;
-        case 'md': this.nbCols = 3; break;
-        case 'lg': this.nbCols = 4; break;
-        case 'xl': this.nbCols = 5; break;
-        default: this.nbCols = 3;
+        case 'xs':
+          this.nbCols = 1;
+          break;
+        case 'sm':
+          this.nbCols = 2;
+          break;
+        case 'md':
+          this.nbCols = 3;
+          break;
+        case 'lg':
+          this.nbCols = 4;
+          break;
+        case 'xl':
+          this.nbCols = 5;
+          break;
+        default:
+          this.nbCols = 3;
       }
     });
 
@@ -60,7 +71,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         (contactsState: State) => {
           this.isLoading = contactsState.loading;
           this.error = contactsState.contactsError;
-          if (this.error){
+          if (this.error) {
             this.showErrorAlert(this.error);
           }
           this.myContactsFeed = contactsState.contacts;
@@ -77,29 +88,31 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   private showErrorAlert(message: string) {
-    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
-    const hostViewContainerRef = this.alertHost.viewContainerRef;
-    hostViewContainerRef.clear();
-
-    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
-
-    componentRef.instance.message = message;
-    this.closeSub = componentRef.instance.close.subscribe(() => {
-      this.closeSub.unsubscribe();
+    if (this.alertHost) {
+      const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+      const hostViewContainerRef = this.alertHost.viewContainerRef;
       hostViewContainerRef.clear();
-    });
+
+      const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+
+      componentRef.instance.message = message;
+      this.closeSub = componentRef.instance.close.subscribe(() => {
+        this.closeSub.unsubscribe();
+        hostViewContainerRef.clear();
+      });
+    }
   }
 
-  onAddContact(contact: Contact){
+  onAddContact(contact: Contact) {
     this.store.dispatch(new ContactsActions.SaveContact(contact));
   }
 
-  onDeleteContact(contact: Contact){
+  onDeleteContact(contact: Contact) {
     this.store.dispatch(new ContactsActions.DeleteContact(contact.id));
   }
 
   ngOnDestroy() {
-    if (this.closeSub){
+    if (this.closeSub) {
       this.closeSub.unsubscribe();
     }
 
